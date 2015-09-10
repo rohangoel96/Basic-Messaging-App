@@ -114,7 +114,7 @@ public class Server extends JFrame{
 				showMessage("!! Only string inputs allowed !!");
 			}
 									
-		} while (!message.equals("CLIENT-END"));
+		} while (!message.equals("CLIENT : END"));
 		
 	}	
 	

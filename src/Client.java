@@ -31,7 +31,7 @@ public class Client extends JFrame{
 					
 					@Override
 					public void actionPerformed(ActionEvent event) {
-						sendData(event.getActionCommand());
+						sendMessage(event.getActionCommand());
 						userText.setText("");
 						
 					}
@@ -42,12 +42,122 @@ public class Client extends JFrame{
 		add(new JScrollPane(chatWindow),BorderLayout.CENTER);
 		setSize(400,600);
 		setVisible(true);
+			
+	}
+	
+	//connect to server
+	public void startRunning(){
 		
+		try {
+			
+			connectToServer();
+			setupStreams();
+			whileChatting();
+			
+		} catch (EOFException e) {
+			showMessage("\n Client terminated the connection\n");
+		}catch(IOException e2){
+			e2.printStackTrace();
+		}finally{
+			closeConnection();
+		}
+			
+	}
+
+	//connect to server
+	private void connectToServer() throws IOException{
+		
+		showMessage("Attempting connection");	//trying to make the socket
+		connection = new Socket(InetAddress.getByName(serverIP), 6789);	//ServerIP, port(same as Server)
+		showMessage("Connected to :"+connection.getInetAddress().getHostName());
+	
+	}
+	
+	//set up stream to send and recieve messages
+	private void setupStreams() throws IOException{
+		
+		output = new ObjectOutputStream(connection.getOutputStream());
+		output.flush();
+		input = new ObjectInputStream(connection.getInputStream());
+		showMessage("Steams are now setuped");
 		
 	}
 	
+	//while chatting with server
+	private void whileChatting() throws IOException{
+		
+		ableToType(true);
+		do {
+			try {
+				
+				message = (String) input.readObject();
+				showMessage("\n"+message);
+					
+			} catch (ClassNotFoundException e) {
+				showMessage("Type only strings please");
+			}
+			
+		} while (!message.equals("SERVER : END"));
+		
+	}
 	
+	//closes the streams and sockets
+	private void closeConnection(){
+		
+		showMessage("\nClosing connections ...");
+		ableToType(false);
+		
+		try {
+			
+			output.close();
+			input.close();
+			connection.close();
+						
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+	}
 	
+	//send message to server
+	private void sendMessage(String message){
+		
+		try {
+			
+			output.writeObject("CLIENT : "+message);
+			output.flush();
+			showMessage("\nCLIENT : "+message);
+			
+		} catch (IOException e) {
+			chatWindow.append("\nERROR : Can't send message");
+		}
+		
+	}
 	
+	//update the chatWindow
+	private void showMessage(final String message){
+		
+		SwingUtilities.invokeLater(
+				
+				new Runnable(){
+					public void run(){
+						chatWindow.append(message);
+					}
+				}	
+				);
+	
+	}
+	private void ableToType(boolean bool){
 
+		SwingUtilities.invokeLater(
+				
+				new Runnable(){
+					public void run(){
+						userText.setEditable(bool);
+					}
+				}	
+				);	
+	}
+	
+	
 }
