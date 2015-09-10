@@ -21,7 +21,7 @@ public class Client extends JFrame{
 	
 	public Client(String host){ //IP of the server
 		
-		super("Rohan's Client");
+		super("Rohan's Messenger - Client");
 		serverIP = host;
 		userText = new JTextField();
 		userText.setEditable(false);
@@ -55,7 +55,7 @@ public class Client extends JFrame{
 			whileChatting();
 			
 		} catch (EOFException e) {
-			showMessage("\n Client terminated the connection\n");
+			showMessage("\nClient terminated the connection\n");
 		}catch(IOException e2){
 			e2.printStackTrace();
 		}finally{
@@ -67,9 +67,9 @@ public class Client extends JFrame{
 	//connect to server
 	private void connectToServer() throws IOException{
 		
-		showMessage("Attempting connection");	//trying to make the socket
+		showMessage("Attempting connection....");	//trying to make the socket
 		connection = new Socket(InetAddress.getByName(serverIP), 6789);	//ServerIP, port(same as Server)
-		showMessage("Connected to :"+connection.getInetAddress().getHostName());
+		showMessage("\nConnected to : "+connection.getInetAddress().getHostName());
 	
 	}
 	
@@ -79,7 +79,7 @@ public class Client extends JFrame{
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(connection.getInputStream());
-		showMessage("Steams are now setuped");
+		showMessage("\nSteams are now setuped\n");
 		
 	}
 	
@@ -158,6 +158,12 @@ public class Client extends JFrame{
 				}	
 				);	
 	}
-	
+
+	public static void main(String[] args) {
+		
+		Client rohan_client = new Client("127.0.0.1"); //The constructor needs an IP for the server
+		rohan_client.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		rohan_client.startRunning();
+	}
 	
 }

@@ -16,7 +16,7 @@ public class Server extends JFrame{
 	
 	public Server(){
 		
-		super("Rohan's Messenger");
+		super("Rohan's Messenger - Server");
 		userText = new JTextField();
 		userText.setEditable(false); 	//can't edit if not connected to anyone
 		
@@ -58,7 +58,7 @@ public class Server extends JFrame{
 					whileChatting();
 					
 				} catch (EOFException e) { //EOF : End of File (here connection)
-					showMessage("\n Server ended the connection");
+					showMessage("\nServer ended the connection");
 				} finally{
 					closeConnections();
 				}
@@ -80,7 +80,7 @@ public class Server extends JFrame{
 		//setup the socket (connection)
 		connection = server.accept(); //accepts the connection to socket when someone tries to connect
 		
-		showMessage("Now connected to "+connection.getInetAddress().getHostName());
+		showMessage("Connected to : "+connection.getInetAddress().getHostName());
 		
 	}
 	
@@ -92,7 +92,7 @@ public class Server extends JFrame{
 		
 		input = new ObjectInputStream(connection.getInputStream()); //no flush in input as can flush only on your input and not their input
 		
-		showMessage("\nStreams are no setup\n");
+		showMessage("\nStreams are now setuped\n");
 		
 	}
 	
@@ -142,7 +142,7 @@ public class Server extends JFrame{
 			
 			output.writeObject("SERVER : "+message);
 			output.flush();
-			showMessage("\n SERVER : "+message); //should also show in the chatbox the message sent
+			showMessage("\nSERVER : "+message); //should also show in the chatbox the message sent
 			
 		} catch (IOException e) {
 			chatWindow.append("ERROR : UNABLE TO SEND MESSAGE !");
@@ -179,9 +179,9 @@ public class Server extends JFrame{
 	
 	public static void main(String[] args) {
 		
-		Server rohan = new Server();
-		rohan.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		rohan.startRunning();
+		Server rohan_server = new Server();
+		rohan_server.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		rohan_server.startRunning();
 	}
 
 }
