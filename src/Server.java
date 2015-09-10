@@ -35,7 +35,7 @@ public class Server extends JFrame{
 		add(userText, BorderLayout.NORTH);
 		chatWindow = new JTextArea();
 		add(new JScrollPane(chatWindow));
-		setSize(1024,768);
+		setSize(400,600);
 		setVisible(true);
 			
 			}
@@ -175,6 +175,13 @@ public class Server extends JFrame{
 				}							
 				);
 		
+	}
+	
+	public static void main(String[] args) {
+		
+		Server rohan = new Server();
+		rohan.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		rohan.startRunning();
 	}
 
 }
